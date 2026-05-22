@@ -1,0 +1,292 @@
+<!doctype html>
+<html>
+<head>
+  <title>Volunteer Network</title>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Segoe UI", sans-serif;
+    }
+
+    body {
+      background: linear-gradient(to right, #667eea, #764ba2);
+      min-height: 100vh;
+      padding: 40px 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    h1 {
+      color: white;
+      margin-bottom: 30px;
+      font-size: 44px;
+      text-align: center;
+    }
+
+    /* TOP SECTION */
+    .top-container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 30px;
+      width: 100%;
+      max-width: 1100px;
+    }
+
+    .card {
+      background: #fff;
+      padding: 25px;
+      border-radius: 16px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    }
+
+    h2 {
+      margin-bottom: 15px;
+      color: #333;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 10px;
+      margin: 8px 0;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      outline: none;
+    }
+
+    .btn {
+      width: 100%;
+      padding: 10px;
+      border: none;
+      border-radius: 8px;
+      background: #667eea;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .btn:hover {
+      background: #5a67d8;
+    }
+
+    /* CENTER FIND SECTION */
+    .find-center {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+
+    .find-center select,
+    .find-center button {
+      width: 80%;
+    }
+
+    .find-center button {
+      margin-top: 10px;
+    }
+
+    /* RESULTS SECTION */
+    .results-container {
+      margin-top: 35px;
+      width: 100%;
+      max-width: 1100px;
+      background: #fff;
+      border-radius: 16px;
+      padding: 30px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    }
+
+    .results-title {
+      font-size: 20px;
+      font-weight: bold;
+      margin-bottom: 15px;
+      color: #333;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 15px;
+    }
+
+    th {
+      background: #667eea;
+      color: white;
+      padding: 14px;
+      text-align: left;
+    }
+
+    td {
+      padding: 16px;
+      border-bottom: 1px solid #eee;
+    }
+
+    tr:hover {
+      background: #f7f8ff;
+    }
+
+    .delete-btn {
+      background: #ff4d4f;
+      color: white;
+      border: none;
+      padding: 7px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .delete-btn:hover {
+      background: #d60023;
+      transform: scale(1.05);
+    }
+
+    .empty {
+      text-align: center;
+      color: gray;
+      padding: 20px;
+    }
+
+  </style>
+</head>
+
+<body>
+
+<h1>Volunteer Network</h1>
+
+<!-- TOP SECTION -->
+<div class="top-container">
+
+  <!-- REGISTER -->
+  <div class="card">
+    <h2>Register Volunteer</h2>
+
+    <form id="volunteerForm">
+      <input name="name" placeholder="Full Name" required />
+      <input name="email" placeholder="Email Address" required />
+      <input name="contact" placeholder="Contact Number" required />
+
+      <select name="district" required>
+        <option value="">Select District</option>
+        <option>Pune</option>
+        <option>Mumbai</option>
+        <option>Nagpur</option>
+        <option>Nashik</option>
+      </select>
+
+      <button class="btn" type="submit">Register</button>
+    </form>
+  </div>
+
+  <!-- FIND VOLUNTEERS (CENTERED) -->
+  <div class="card find-center">
+    <h2>Find Volunteers</h2>
+
+    <select id="districtSelect">
+      <option value="">Select District</option>
+      <option>Pune</option>
+      <option>Mumbai</option>
+      <option>Nagpur</option>
+      <option>Nashik</option>
+    </select>
+
+    <button class="btn" onclick="getVolunteers()">
+      Show Results
+    </button>
+  </div>
+
+</div>
+
+<!-- RESULTS -->
+<div class="results-container">
+  <div class="results-title">Volunteer Results</div>
+  <div id="result"></div>
+</div>
+
+<script>
+const BASE_URL = "/api";
+
+/* REGISTER */
+document.getElementById("volunteerForm").addEventListener("submit", async function(e) {
+  e.preventDefault();
+
+  const data = Object.fromEntries(new FormData(this));
+
+  await fetch(`${BASE_URL}/register`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(data)
+  });
+
+  alert("Volunteer Registered!");
+  this.reset();
+});
+
+/* GET */
+async function getVolunteers() {
+  const district = document.getElementById("districtSelect").value;
+
+  if (!district) {
+    document.getElementById("result").innerHTML =
+      "<p class='empty'>Please select a district</p>";
+    return;
+  }
+
+  const res = await fetch(`${BASE_URL}/volunteers?district=${district}`);
+  const data = await res.json();
+
+  let html = "";
+
+  if (!data.length) {
+    html = "<p class='empty'>No volunteers found</p>";
+  } else {
+    html = `
+      <table>
+        <tr>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Contact</th>
+          <th>Action</th>
+        </tr>
+    `;
+
+    data.forEach(v => {
+      html += `
+        <tr>
+          <td>${v.name}</td>
+          <td>${v.email}</td>
+          <td>${v.contact}</td>
+          <td>
+            <button class="delete-btn" onclick="deleteVolunteer('${v.email}')">
+              Delete
+            </button>
+          </td>
+        </tr>
+      `;
+    });
+
+    html += "</table>";
+  }
+
+  document.getElementById("result").innerHTML = html;
+}
+
+/* DELETE */
+async function deleteVolunteer(email) {
+  await fetch(`${BASE_URL}/volunteers`, {
+    method: "DELETE",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ email })
+  });
+
+  alert("Deleted successfully");
+  getVolunteers();
+}
+</script>
+
+</body>
+</html>
