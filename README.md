@@ -15,7 +15,7 @@ The architecture separates the application into **Web, Application, and Database
 
 ## 🏗️ **Architecture Diagram**
 <p align="center">
-  <img src="./Images/architecture.png" width="800">
+  <img src="./Images/1.Architecture.png" width="800">
 </p>
 
 In this architecture, a Internet-facing Application Load Balancer forwards client traffic to our web tier EC2 instances. The web tier is running Nginx webservers that are configured to serve a index.html website and redirects our API calls to the application tier’s internal facing load balancer. The internal facing load balancer then forwards that traffic to the application tier, which is written in Node.js. The application tier manipulates data in an MySQL SIngle Cluster -Free tier database and returns it to our web tier. Load balancing, health checks and autoscaling groups are created at each layer to maintain the availability of this architecture.
@@ -34,7 +34,7 @@ To organize resources efficiently, the VPC is divided into **Five subnets** acro
 
 <h3 align="center">VPC Resource Map</h3>
 <p align="center">
-  <img src="./Images/VPC-ResourceMap.png" width="800">
+  <img src="./Images/2.VPC-ResourceMap.png" width="800">
 </p>
 
 
@@ -61,12 +61,12 @@ An **Internet Gateway (IGW)** is attached to the VPC, enabling resources in publ
 
 <h4 align="center">Create Internet Gateway</h4>
 <p align="center">
-  <img src="./Images/Create IGW.png" width="800">
+  <img src="./Images/3.Create IGW.png" width="800">
 </p>
 
 <h4 align="center">Attach IGW to VPC</h4>
 <p align="center">
-  <img src="./Images/Attach IGW.png" width="800">
+  <img src="./Images/4.Attach IGW.png" width="800">
 </p>
 
 Go to: 
@@ -83,19 +83,19 @@ For resources in private subnets, direct internet access is restricted to enhanc
 
 <h4 align="center">Create NAT Gateway</h4>
 <p align="center">
-  <img src="./Images/Create NAT.png" width="800">
+  <img src="./Images/5.Create NAT.png" width="800">
 </p>
 <p align="center"> Go to <b>VPC Dashboard → NAT Gateways</b> → Click <b>Create NAT Gateway</b> </p>
 
 <p align="center">
-  <img src="./Images/NAT Setting.png" width="800">
+  <img src="./Images/6.NAT Setting.png" width="800">
 </p>
 <p align="center"> Enter Name for NAT Gateway → Select a <b>Regional Availability</b> →  Inside manual EIP Allocation 
 → Allocate & attach <b>Elastic IP's</b> to Availability Zones → Click <b>Create NAT Gateway</b>
  </p>
  
 <p align="center">
-  <img src="./Images/NAT.png" width="800">
+  <img src="./Images/7.NAT.png" width="800">
 </p>
 
 
@@ -119,7 +119,7 @@ Route Tables are configured to control traffic flow between subnets and external
 📌 Enables direct internet access for Web Tier and Internet-facing Load Balancer.
 
 <p align="center">
-  <img src="./Images/PUBLICRT.png" width="800">
+  <img src="./Images/8.PUBLICRT.png" width="800">
 </p>
 
   ---
@@ -133,7 +133,7 @@ Route Tables are configured to control traffic flow between subnets and external
 📌 Allows outbound internet access (e.g., updates) while keeping instances private. 
 
 <p align="center">
-  <img src="./Images/PVTRT.png" width="800">
+  <img src="./Images/9.PVTRT.png" width="800">
 </p>
 
   ---
@@ -147,7 +147,7 @@ Route Tables are configured to control traffic flow between subnets and external
 📌 Ensures the database layer remains fully isolated and secure.
 
 <p align="center">
-  <img src="./Images/DBRT.png" width="800">
+  <img src="./Images/10.DBRT.png" width="800">
 </p>
 
   ---
@@ -158,7 +158,7 @@ Security is enforced using **Security Groups**, which act as virtual firewalls t
 Each component is configured with controlled access rules to ensure secure and restricted communication:
 
 <p align="center">
-  <img src="./Images/SG.png" width="800">
+  <img src="./Images/11.SG.png" width="800">
 </p>
 
 - **Load Balancer Security Group:**  
@@ -187,7 +187,7 @@ Each component is configured with controlled access rules to ensure secure and r
 To ensure proper isolation, a **DB Subnet Group** is created using private database subnets across multiple Availability Zones.
 
 <p align="center">
-  <img src="./Images/Subnet Group.png" width="800">
+  <img src="./Images/12.Subnet Group.png" width="800">
 </p>
 
 Go to the **RDS Dashboard → Subnet Groups → Create DB Subnet Group**, provide a name and description, select your VPC, and add the **database subnets from each Availability Zone**.
@@ -199,11 +199,11 @@ Go to the **RDS Dashboard → Subnet Groups → Create DB Subnet Group**, provid
 ## 🔹 Database Creation
 
 <p align="center">
-  <img src="./Images/DB create.png" width="800">
+  <img src="./Images/13.DB create.png" width="800">
 </p>
 
 <p align="center">
-  <img src="./Images/DB Setting.png" width="800">
+  <img src="./Images/14.DB Setting.png" width="800">
 </p>
 
 
@@ -215,7 +215,7 @@ Navigate to **RDS Dashboard → Databases → Create Database** and select **Ful
 ## 🔹 Availability & Connectivity
 
 <p align="center">
-  <img src="./Images/DB-Connectivity.png" width="800">
+  <img src="./Images/15.DB-Connectivity.png" width="800">
 </p>
 
 - Deployment: **Single-AZ deployment** (Due To Free Tier limitations)
@@ -564,10 +564,7 @@ This video demonstrates the working deployment of the **AWS Three-Tier Web Appli
 </p>
 
 ### 🔍 What this demo shows:
-- Frontend served via **Web Tier (Nginx)**
-- API requests handled by **Application Tier (Node.js)**
-- Data fetched from **Database Tier (MySQL - RDS)**
-- Complete request flow working across all layers
+This demo showcases the complete working of the deployed application, where the frontend is served through the Web Tier using Nginx, API requests are processed by the Application Tier running a Node.js backend, and data is retrieved from the Database Tier using Amazon RDS (MySQL). It demonstrates a fully functional end-to-end request flow across all layers of the three-tier architecture.
 
 📌 Click on the image above to watch the full demo on YouTube.
 
