@@ -529,19 +529,31 @@ They define:
 Auto Scaling Groups are configured for both tiers:
 
 <p align="center">
-  <img src="./Images/ASG launch TEMP.png" width="800">
-</p>
-<br>
-<p align="center">
-  <img src="./Images/ASG options.png" width="800">
-</p>
-<br>
-<p align="center">
-  <img src="./Images/ASG attach LB.png" width="800">
+  <img src="./Images/30.ASG.png" width="800">
 </p>
 
 ### 🔹 Web Tier ASG
 The **Web Tier Auto Scaling Group (ASG)** is deployed across public subnets and is attached to an Internet-facing Application Load Balancer, maintaining a desired capacity of two instances to handle incoming user traffic and ensure high availability.
+
+<p align="center">
+  <img src="./Images/31.ASG launch TEMP.png" width="800">
+</p>
+
+<p align="center">
+  <img src="./Images/32.ASG options.png" width="800">
+</p>
+
+<p align="center">
+  <img src="./Images/33.ASG attach LB.png" width="800">
+</p>
+
+<p align="center">
+  <img src="./Images/34.Scaling -ASG.png" width="800">
+</p>
+
+<p align="center">
+  <img src="./Images/35.SNS-ASG.png" width="800">
+</p>
 
 ### 🔹 App Tier ASG
 The **Application Tier Auto Scaling Group (ASG)** is deployed across private app subnets and is connected to an internal Application Load Balancer, maintaining a desired capacity of two instances to support scalable backend processing while keeping the application layer secure and isolated.
@@ -564,7 +576,7 @@ This video demonstrates the working deployment of the **AWS Three-Tier Web Appli
 
 <p align="center">
   <a href="https://youtu.be/g-qtxnyHksw">
-    <img src="https://img.youtube.com/vi/g-qtxnyHksw/0.jpg" width="700">
+    <img src="./Images/36.DEMO-Thumbnail.png" width="700">
   </a>
 </p>
 
