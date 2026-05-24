@@ -554,7 +554,22 @@ The **Application Tier Auto Scaling Group (ASG)** is deployed across private app
 ```text
 User → Internet ALB → Web Tier (Nginx) → Internal ALB → App Tier (Node.js) → Database (MySQL)
 ```
+# 🎥 Application DEMO Video: 
+This video demonstrates the working deployment of the **AWS Three-Tier Web Application**, showcasing end-to-end connectivity between the frontend, backend, and database layers.
 
+<p align="center">
+  <a href="https://youtu.be/g-qtxnyHksw">
+    <img src="https://img.youtube.com/vi/g-qtxnyHksw/0.jpg" width="700">
+  </a>
+</p>
+
+### 🔍 What this demo shows:
+- Frontend served via **Web Tier (Nginx)**
+- API requests handled by **Application Tier (Node.js)**
+- Data fetched from **Database Tier (MySQL - RDS)**
+- Complete request flow working across all layers
+
+📌 Click on the image above to watch the full demo on YouTube.
 
 ## 📜 **License**
 This project is licensed under the **MIT License**.
