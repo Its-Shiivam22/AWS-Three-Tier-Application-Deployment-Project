@@ -234,7 +234,7 @@ But in Real Scenarios Multi-AZ DB Cluster Deployments are used to ensure High Av
 ## 🔹 Final Setup
 
 <p align="center">
-  <img src="./Images/MySQL-DB.png" width="800">
+  <img src="./Images/16.MySQL-DB.png" width="800">
 </p>
 
 After creation:
@@ -260,7 +260,7 @@ To securely access these instances, a **Jump Server (Bastion Host)** is used:
 - From the Jump Server, access is established to **App Tier instances in private subnets**
 
 <p align="center">
-  <img src="./Images/SSH APP TIER.png" width="800">
+  <img src="./Images/17.SSH APP TIER.png" width="800">
 </p>
 
 📌 Traffic Flow: User → Jump Server (Public Subnet) → App Tier (Private Subnet)
@@ -299,7 +299,7 @@ mysql -h <RDS-ENDPOINT> -u <USERNAME> -p
 
 ### Create Database & Table:
 <p align="center">
-  <img src="./Images/MYSQL.png" width="800">
+  <img src="./Images/18.MYSQL.png" width="800">
 </p>
 
 ## ⚙️ Application Setup
@@ -351,7 +351,7 @@ node app.js
 ```
 
 <p align="center">
-  <img src="./Images/Node app.png" width="800">
+  <img src="./Images/19.Node app.png" width="800">
 </p>
 
 ### Install PM2
@@ -363,7 +363,7 @@ pm2 save
 ```
 
 <p align="center">
-  <img src="./Images/PM2.png" width="800">
+  <img src="./Images/20.PM2.png" width="800">
 </p>
 
 ### Health check
@@ -371,7 +371,7 @@ pm2 save
 curl http://localhost:3000/health
 ```
 <p align="center">
-  <img src="./Images/APP health.png" width="800">
+  <img src="./Images/21.APP health.png" width="800">
 </p>
 
 ## ✅ App-Server Setup Completed
@@ -418,7 +418,7 @@ sudo systemctl status nginx
 ```
 
 <p align="center">
-  <img src="./Images/nginx Status.png" width="800">
+  <img src="./Images/22.nginx Status.png" width="800">
 </p>
 
 ### 🔁 Reverse Proxy Configuration:
@@ -430,7 +430,7 @@ sudo systemctl restart nginx
 ```
 
 <p align="center">
-  <img src="./Images/nginx conf.png" width="800">
+  <img src="./Images/23.nginx conf.png" width="800">
 </p>
 
 ### Add Index.html
@@ -457,7 +457,7 @@ This is accomplished using:
 Configured EC2 instances from both **Web Tier** and **App Tier** are used to create **AMIs**.
 
 <p align="center">
-  <img src="./Images/Create AMI.png" width="800">
+  <img src="./Images/24.Create AMI.png" width="800">
 </p>
 
 These AMIs act as reusable templates containing:
@@ -474,7 +474,7 @@ These AMIs act as reusable templates containing:
 Launch Templates are created using the respective **AMIs** for Web and App tiers.
 
 <p align="center">
-  <img src="./Images/LaunchTEMP.png" width="800">
+  <img src="./Images/25.LaunchTEMP.png" width="800">
 </p>
 
 They define:
@@ -488,11 +488,11 @@ They define:
 ## Created Target groups For Load Balancing & Auto-Scaling:
 
 <p align="center">
-  <img src="./Images/WEB-tg.png" width="800">
+  <img src="./Images/26.WEB-tg.png" width="800">
 </p>
 <br>
 <p align="center">
-  <img src="./Images/APPS-tg.png" width="800">
+  <img src="./Images/27.APPS-tg.png" width="800">
 </p>
 
 ---
@@ -502,8 +502,8 @@ They define:
 ### 🌍 Internet-Facing Load Balancer (Web Tier)
 
 <p align="center">
-  <img src="./Images/WebServer -LB.png" width="800">
-</p
+  <img src="./Images/28.WebServer -LB.png" width="800">
+</p>
 
 - Handles incoming user requests  
 - Routes traffic to Web Tier instances  
@@ -512,6 +512,11 @@ They define:
 ---
 
 ### 🔐 Internal Load Balancer (App Tier)
+
+
+<p align="center">
+  <img src="./Images/29.Internal-LB.png" width="800">
+</p>
 
 - Routes traffic from Web Tier → App Tier  
 - Listener: **HTTP (80)**  
