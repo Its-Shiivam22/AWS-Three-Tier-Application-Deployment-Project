@@ -425,7 +425,7 @@ sudo systemctl status nginx
 Update Nginx config to forward API requests to App Tier via Internal Load Balancer
 
 ```bash
-sudo nano /etc/nginx/nginx.conf
+sudo vi /etc/nginx/nginx.conf
 sudo systemctl restart nginx
 ```
 
