@@ -366,7 +366,7 @@ pm2 save
   <img src="./Images/PM2.png" width="800">
 </p>
 
-# Health check
+### Health check
 ```bash
 curl http://localhost:3000/health
 ```
@@ -386,18 +386,67 @@ The Application server has been successfully deployed and configured.
 - Outbound internet access enabled via **NAT Gateway**
 
 ---
+# 📌 Part 4: Web Tier Deployment
+## 🌐 Web Tier Overview
 
-## 🔁 Post App Setup: AMI, Launch Template & Auto Scaling
+The **Web Tier** is responsible for handling incoming client requests and serving static content. 
+It also forwards API requests to the Application Tier.
+
+This layer is deployed in **public subnets** and is exposed to the internet via an **Internet-facing Application Load Balancer**.
+
+---
+
+## 🚀 Web Server Setup
+
+EC2 instances are launched in **public subnets** to host the web server.
+
+### 🔹 Instance Configuration
+
+- AMI: **Amazon Linux 2023**
+- Instance Type: **t3.micro**
+- Subnet: **Public Subnet**
+- Security Group: **Web Tier SG (HTTP/HTTPS allowed)**
+
+---
+
+## ⚙️ Nginx Installation & Configuration
+Install and start Nginx:
+```bash
+sudo yum install nginx -y
+sudo systemctl start nginx
+sudo systemctl enable nginx
+sudo systemctl status nginx
+```
+<p align="center">
+  <img src="./Images/nginx Status.png" width="800">
+</p>
+
+## 🔁 Reverse Proxy Configuration:
+Update Nginx config to forward API requests to App Tier via Internal Load Balancer
+
+```bash
+sudo nano /etc/nginx/nginx.conf
+sudo systemctl restart nginx
+```
+
+<p align="center">
+  <img src="./Images/nginx conf.png" width="800">
+</p>
+
+
+# 🔁 Part 5: Post App & Web Setup -AMI, Launch Template & Auto Scaling
 After completing the App Tier setup, the configured instance is used to enable **scalability and high availability**.
 
 ---
 
 ### 🖼️ Step 1: Create AMI (Golden Image) from AppServer1
-1. Go to **EC2 Dashboard → Instances**
-2. Select **AppServer1**
-3. Click **Actions → Image and templates → Create Image**
-4. Provide a **name and description**
-5. Click **Create Image**
+
+<p align="center">
+  <img src="./Images/Create AMI.png" width="800">
+</p>
+
+Go to **EC2 Dashboard → Instances** → Select **AppServer1** → Click **Actions → Image and templates → Create Image**
+Provide a **name and description** → Click **Create Image**
 
 📌 This AMI contains:
 - OS configuration  
@@ -405,15 +454,13 @@ After completing the App Tier setup, the configured instance is used to enable *
 - Application code  
 
 ### 🔹 Step 2: Launch AppServer2 from AMI
-1. Go to **EC2 Dashboard → AMIs**
-2. Select the created **AMI**
-3. Click **Launch Instance**
-4. Choose:
+Go to **EC2 Dashboard → AMIs** → Select the created **AMI** → Click **Launch Instance**
+Choose:
    - Instance type: **t3.micro**
    - Network: **Same VPC**
    - Subnet: **Private App Subnet 1b**
    - Security Group: **App Tier SG**
-5. Launch the instance
+Launch the instance
 
 ---
 
@@ -431,11 +478,18 @@ After completing the App Tier setup, the configured instance is used to enable *
 
 A **Launch Template** is created using the AMI to standardize instance deployment.
 
+<p align="center">
+  <img src="./Images/AMi Launch Temp.png" width="800">
+</p>
+
+
 - Navigate to **EC2 → Launch Templates → Create Launch Template**
-- Select:
-  - AMI: **App Tier AMI**
-  - Instance Type: **t3.micro**
-  - Security Group: **App Tier SG**
+- Select: AMI: **App Server AMI**, Instance Type: **t3.micro** & Security Group: **App Tier SG**
+
+ <h4 align="center">AppServer Template</h4>   
+<p align="center">
+  <img src="./Images/AppServer Template.png" width="800">
+</p>
 
 📌 Ensures all future instances are **identical and pre-configured**.
 
@@ -444,7 +498,7 @@ A **Launch Template** is created using the AMI to standardize instance deploymen
 ### 🎯 Step 3: Target Group Creation
 
 <p align="center">
-  <img src="./Images/APP health.png" width="800">
+  <img src="./Images/App Tg Settings.png" width="800">
 </p>
 
 - Go to **EC2 → Target Groups** → Create a target group:
@@ -463,7 +517,6 @@ A **Launch Template** is created using the AMI to standardize instance deploymen
   <img src="./Images/APP health.png" width="800">
 </p>
 
-
 - Go to **EC2 → Auto Scaling Groups** → Create ASG using the **Launch Template**
 - Select:
   - VPC + **Private App Subnets**
@@ -475,6 +528,9 @@ A **Launch Template** is created using the AMI to standardize instance deploymen
 📌 Automatically maintains and replaces unhealthy instances.
 
 ---
+### Internal Load Balancer Setup:
+
+
 
 ### ✅ Final Outcome
 
