@@ -585,11 +585,12 @@ This video demonstrates the working deployment of the **AWS Three-Tier Web Appli
     <img src="./Images/36.DEMO-Thumbnail.png" width="700">
   </a>
 </p>
+📌 Click on the image above to watch the full demo on YouTube.
 
 ### 🔍 What this demo shows:
 This demo showcases the complete working of the deployed application, where the frontend is served through the Web Tier using Nginx, API requests are processed by the Application Tier running a Node.js backend, and data is retrieved from the Database Tier using Amazon RDS (MySQL). It demonstrates a fully functional end-to-end request flow across all layers of the three-tier architecture.
 
-📌 Click on the image above to watch the full demo on YouTube.
+
 
 ## 📜 **License**
 This project is licensed under the **MIT License**.
