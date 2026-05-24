@@ -433,131 +433,132 @@ sudo systemctl restart nginx
   <img src="./Images/nginx conf.png" width="800">
 </p>
 
+## Add Index.html
+```bash
+vi /usr/share/nginx/html/index.html
+```
 
-# 🔁 Part 5: Post App & Web Setup -AMI, Launch Template & Auto Scaling
-After completing the App Tier setup, the configured instance is used to enable **scalability and high availability**.
+# 📌 Part 5: Post Deployment – AMI, Launch Template, Auto Scaling & Load Balancing
+
+## 🚀 Overview
+
+After successfully setting up the **Application Tier** and **Web Tier**, the architecture is enhanced to achieve **scalability, high availability, and fault tolerance**.
+
+This is accomplished using:
+- **Amazon Machine Images (AMI)**
+- **Launch Templates**
+- **Auto Scaling Groups (ASG)**
+- **Application Load Balancers (ALB)**
 
 ---
 
-### 🖼️ Step 1: Create AMI (Golden Image) from AppServer1
+## 🖼️ AMI Creation
+
+Configured EC2 instances from both **Web Tier** and **App Tier** are used to create **AMIs**.
 
 <p align="center">
   <img src="./Images/Create AMI.png" width="800">
 </p>
 
-Go to **EC2 Dashboard → Instances** → Select **AppServer1** → Click **Actions → Image and templates → Create Image**
-Provide a **name and description** → Click **Create Image**
-
-📌 This AMI contains:
-- OS configuration  
-- Installed software (Node.js, PM2, etc.)  
+These AMIs act as reusable templates containing:
+- Operating system configuration  
+- Installed software (Nginx / Node.js)  
 - Application code  
 
-### 🔹 Step 2: Launch AppServer2 from AMI
-Go to **EC2 Dashboard → AMIs** → Select the created **AMI** → Click **Launch Instance**
-Choose:
-   - Instance type: **t3.micro**
-   - Network: **Same VPC**
-   - Subnet: **Private App Subnet 1b**
-   - Security Group: **App Tier SG**
-Launch the instance
+📌 Enables rapid and consistent deployment of new instances.
 
 ---
 
-### 🔹 Result
+## 📦 Launch Template
 
-- **AppServer2** is an exact replica of **AppServer1**
-- No need to manually configure software again  
-- Ensures **consistency and faster scaling**
-
-📌 This approach is later used in **Launch Templates and Auto Scaling Groups**.
-
----
-
-### 📦 Step 2: Create Launch Template
-
-A **Launch Template** is created using the AMI to standardize instance deployment.
+Launch Templates are created using the respective **AMIs** for Web and App tiers.
 
 <p align="center">
-  <img src="./Images/AMi Launch Temp.png" width="800">
+  <img src="./Images/LaunchTEMP.png" width="800">
 </p>
 
+They define:
+- Instance type (**t2.micro**)  
+- Security Groups  
+- AMI reference  
 
-- Navigate to **EC2 → Launch Templates → Create Launch Template**
-- Select: AMI: **App Server AMI**, Instance Type: **t3.micro** & Security Group: **App Tier SG**
-
- <h4 align="center">AppServer Template</h4>   
-<p align="center">
-  <img src="./Images/AppServer Template.png" width="800">
-</p>
-
-📌 Ensures all future instances are **identical and pre-configured**.
+📌 Ensures all newly launched instances are **identical and pre-configured**.
 
 ---
-
-### 🎯 Step 3: Target Group Creation
+## Created Target groups For Load Balancing & Auto-Scaling:
 
 <p align="center">
-  <img src="./Images/App Tg Settings.png" width="800">
+  <img src="./Images/WEB-tg.png" width="800">
 </p>
-
-- Go to **EC2 → Target Groups** → Create a target group:
-  - Target Type: **Instances**
-  - Protocol: **HTTP**
-  - Port: **3000**
-  - Health Check Path: **/health**
-
-📌 Used by Load Balancer to distribute traffic.
+<br>
+<p align="center">
+  <img src="./Images/APPS-tg.png" width="800">
+</p>
 
 ---
 
-### 🔁 Step 4: Auto Scaling Group (ASG)
+## 🔁 Load Balancing
+
+### 🌍 Internet-Facing Load Balancer (Web Tier)
 
 <p align="center">
-  <img src="./Images/APP health.png" width="800">
+  <img src="./Images/WebServer -LB.png" width="800">
+</p
+
+- Handles incoming user requests  
+- Routes traffic to Web Tier instances  
+- Listener: **HTTP (80)**  
+
+---
+
+### 🔐 Internal Load Balancer (App Tier)
+
+- Routes traffic from Web Tier → App Tier  
+- Listener: **HTTP (80)**  
+- Forwards requests to **port 3000 (Node.js app)**  
+
+---
+
+## 📈 Auto Scaling Groups (ASG)
+
+Auto Scaling Groups are configured for both tiers:
+
+### 🔹 Web Tier ASG
+- Subnets: **Public Subnets**
+- Attached to: **Internet-facing ALB**
+- Desired Capacity: **2**
+
+### 🔹 App Tier ASG
+- Subnets: **Private App Subnets**
+- Attached to: **Internal ALB**
+- Desired Capacity: **2**
+
+
+<p align="center">
+  <img src="./Images/ASG launch TEMP.png" width="800">
+</p>
+<br>
+<p align="center">
+  <img src="./Images/ASG options.png" width="800">
+</p>
+<br>
+<p align="center">
+  <img src="./Images/ASG attach LB.png" width="800">
 </p>
 
-- Go to **EC2 → Auto Scaling Groups** → Create ASG using the **Launch Template**
-- Select:
-  - VPC + **Private App Subnets**
-  - Attach to **Target Group**
-  - Desired Capacity: **2**
-  - Min: **2**
-  - Max: **3**
-
-📌 Automatically maintains and replaces unhealthy instances.
-
----
-### Internal Load Balancer Setup:
-
-
-
-### ✅ Final Outcome
-
-- App instances are **automatically deployed from AMI**
-- Load is distributed via **Target Group + Load Balancer**
-- System is **highly available and self-healing**
-
-📌 This completes the transition from a single instance to a **scalable production-ready architecture**.
-
-To replicate the configured application server, an **Amazon Machine Image (AMI)** is created from **AppServer1** and used to launch additional instances.
-
-
-## 🖼️ Create AMI from AppServer1 & Launch AppServer2
-
-
-### 📌 Outcome
-
-The App Tier is now:
-- **Scalable**
-- **Highly available**
-- **Secure (private subnet architecture)**
-- **Production-ready (with load balancing & auto scaling)**
+📌 Benefits:
+- Maintains desired number of instances  
+- Replaces unhealthy instances automatically  
+- Provides high availability across AZs  
 
 ---
 
 
+## 🔄 End-to-End Architecture Flow
 
+```text
+User → Internet ALB → Web Tier (Nginx) → Internal ALB → App Tier (Node.js) → Database (MySQL)
+```
 
 
 ## 📜 **License**
@@ -566,7 +567,7 @@ This project is licensed under the **MIT License**.
 ---
 
 ## 👨‍💻 **Author**
-**Shivam**  
+**Shivam Ekale**  
 - 💼 LinkedIn: *(add your link)*  
 - 🌐 Portfolio: *(add your link)*  
 
