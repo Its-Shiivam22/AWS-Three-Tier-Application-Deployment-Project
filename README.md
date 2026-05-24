@@ -183,7 +183,7 @@ Each component is configured with controlled access rules to ensure secure and r
 
 # 📌 Part 2: Database Deployment
 
-### 🔹 DB Subnet Group
+## 🔹 DB Subnet Group
 To ensure proper isolation, a **DB Subnet Group** is created using private database subnets across multiple Availability Zones.
 
 <p align="center">
@@ -196,7 +196,7 @@ Go to the **RDS Dashboard → Subnet Groups → Create DB Subnet Group**, provid
 
 
 
-### 🔹 Database Creation
+## 🔹 Database Creation
 
 <p align="center">
   <img src="./Images/DB create.png" width="800">
@@ -212,7 +212,7 @@ Navigate to **RDS Dashboard → Databases → Create Database** and select **Ful
 - Template: **Free Tier**
 - Set **DB username and password** (Self managed)
 
-### 🔹 Availability & Connectivity
+## 🔹 Availability & Connectivity
 
 <p align="center">
   <img src="./Images/DB-Connectivity.png" width="800">
@@ -225,13 +225,13 @@ But in Real Scenarios Multi-AZ DB Cluster Deployments are used to ensure High Av
 
 📌 This ensures high availability and keeps the database private.
 
-### 🔹 Security Configuration
+## 🔹 Security Configuration
 
 - Attach the **Database Security Group**
 - Allow **MySQL (port 3306)** only from the Application Tier
 - Use **password authentication**
 
-### 🔹 Final Setup
+## 🔹 Final Setup
 
 <p align="center">
   <img src="./Images/MySQL-DB.png" width="800">
@@ -282,14 +282,14 @@ An EC2 instance is deployed in the **private app subnet** to host the Node.js ap
 
 ---
 
-## 🔌 Connectivity Check
+### 🔌 Connectivity Check
 After connecting via SSH, verify internet access:
 ```bash
 ping 8.8.8.8
 ```
 📌 Confirms outbound connectivity via NAT Gateway.
 
-## 🗄️ Database Configuration
+### 🗄️ Database Configuration
 Install MySQL client and connect to MySQL DB:
 
 ```bash
@@ -401,7 +401,6 @@ This layer is deployed in **public subnets** and is exposed to the internet via 
 EC2 instances are launched in **public subnets** to host the web server.
 
 ### 🔹 Instance Configuration
-
 - AMI: **Amazon Linux 2023**
 - Instance Type: **t3.micro**
 - Subnet: **Public Subnet**
@@ -409,7 +408,7 @@ EC2 instances are launched in **public subnets** to host the web server.
 
 ---
 
-## ⚙️ Nginx Installation & Configuration
+### ⚙️ Nginx Installation & Configuration
 Install and start Nginx:
 ```bash
 sudo yum install nginx -y
@@ -417,11 +416,12 @@ sudo systemctl start nginx
 sudo systemctl enable nginx
 sudo systemctl status nginx
 ```
+
 <p align="center">
   <img src="./Images/nginx Status.png" width="800">
 </p>
 
-## 🔁 Reverse Proxy Configuration:
+### 🔁 Reverse Proxy Configuration:
 Update Nginx config to forward API requests to App Tier via Internal Load Balancer
 
 ```bash
@@ -433,7 +433,7 @@ sudo systemctl restart nginx
   <img src="./Images/nginx conf.png" width="800">
 </p>
 
-## Add Index.html
+### Add Index.html
 ```bash
 vi /usr/share/nginx/html/index.html
 ```
@@ -523,17 +523,6 @@ They define:
 
 Auto Scaling Groups are configured for both tiers:
 
-### 🔹 Web Tier ASG
-- Subnets: **Public Subnets**
-- Attached to: **Internet-facing ALB**
-- Desired Capacity: **2**
-
-### 🔹 App Tier ASG
-- Subnets: **Private App Subnets**
-- Attached to: **Internal ALB**
-- Desired Capacity: **2**
-
-
 <p align="center">
   <img src="./Images/ASG launch TEMP.png" width="800">
 </p>
@@ -545,6 +534,12 @@ Auto Scaling Groups are configured for both tiers:
 <p align="center">
   <img src="./Images/ASG attach LB.png" width="800">
 </p>
+
+### 🔹 Web Tier ASG
+The **Web Tier Auto Scaling Group (ASG)** is deployed across public subnets and is attached to an Internet-facing Application Load Balancer, maintaining a desired capacity of two instances to handle incoming user traffic and ensure high availability.
+
+### 🔹 App Tier ASG
+The **Application Tier Auto Scaling Group (ASG)** is deployed across private app subnets and is connected to an internal Application Load Balancer, maintaining a desired capacity of two instances to support scalable backend processing while keeping the application layer secure and isolated.
 
 📌 Benefits:
 - Maintains desired number of instances  
@@ -568,7 +563,6 @@ This project is licensed under the **MIT License**.
 
 ## 👨‍💻 **Author**
 **Shivam Ekale**  
-- 💼 LinkedIn: *(add your link)*  
-- 🌐 Portfolio: *(add your link)*  
-
+-  *([💼 LinkedIn:](https://www.linkedin.com/in/shiivam22/))*  
+-  *([🌐 Portfolio:](https://www.shivamekale.in))*  
 ---
