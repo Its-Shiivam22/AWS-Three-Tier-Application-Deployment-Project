@@ -518,7 +518,7 @@ They define:
   <img src="./Images/29.Internal-LB.png" width="800">
 </p>
 
-- Routes traffic from Web Tier → App Tier  
+- Routes traffic from Web Tier  App Tier  
 - Listener: **HTTP (80)**  
 - Forwards requests to **port 3000 (Node.js app)**  
 
@@ -538,22 +538,28 @@ The **Web Tier Auto Scaling Group (ASG)** is deployed across public subnets and 
 <p align="center">
   <img src="./Images/31.ASG launch TEMP.png" width="800">
 </p>
-
+<h4 align="center">Go to <b>EC2 → Auto Scaling Groups<b> → Click <b>Create Auto Scaling Group<b> → Select <b>Launch Template<b></h4>
+<br>
 <p align="center">
   <img src="./Images/32.ASG options.png" width="800">
 </p>
-
+<h4 align="center">Choose VPC & Subnets</h4>
+<br>
 <p align="center">
   <img src="./Images/33.ASG attach LB.png" width="800">
 </p>
-
+<h4 align="center">Attach Auto-scaling group to an Load Balancer</h4>
+<br>
 <p align="center">
   <img src="./Images/34.Scaling -ASG.png" width="800">
 </p>
-
+<h4 align="center">Select Dynamic Scaling Policy: When CPU Itilization Hits 70% → Autoscaling is invoked</h4>
+<br>
 <p align="center">
   <img src="./Images/35.SNS-ASG.png" width="800">
 </p>
+<h4 align="center">ASG Publishes SNS alerts to Subscribers whenever Ec2 fails to launch & Terminate  </h4>
+<br>
 
 ### 🔹 App Tier ASG
 The **Application Tier Auto Scaling Group (ASG)** is deployed across private app subnets and is connected to an internal Application Load Balancer, maintaining a desired capacity of two instances to support scalable backend processing while keeping the application layer secure and isolated.
