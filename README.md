@@ -90,25 +90,23 @@ Images/1.AWS-Architecture.png
 ```text
 AWS-Three-Tier-Web-Application-Deployment/
 │
+├── Application/
+│   ├── 1.Web Tier
+│   │    ├── index.html
+│   │    └── nginx.conf
+│   │
+│   └── 2.web/
+│         └─ app.js
+│
 ├── Images/
 │   ├── 1.AWS-Architecture.png
 │   ├── 2.VPC-ResourceMap.png
 │   ├── 3.Create IGW.png
 │   └── ...
 │
-├── app/
-│   ├── app.js
-│   ├── package.json
-│   └── .env.example
-│
-├── web/
-│   ├── index.html
-│   └── nginx.conf
-│
 ├── README.md
-├── LICENSE
-└── .gitignore
-```
+└── LICENSE
+ ```
 
 ---
 
@@ -150,8 +148,8 @@ These subnets have a route to the Internet Gateway.
 Private App subnets are used for:
 
 ```text
-Node.js Application Tier EC2 instances
 Internal Application Load Balancer
+Node.js Application Tier EC2 instances
 ```
 
 These instances are not directly accessible from the internet. They use NAT Gateway for outbound internet access.
@@ -258,7 +256,8 @@ Amazon RDS MySQL is used as the database layer. The database is deployed in a pr
 | Authentication | Password-based |
 | Connectivity | App Tier only |
 
-> A Single-AZ database setup is used for this project because it fits the AWS Free Tier. In production, Multi-AZ database deployment is recommended for high availability.
+> A Single-AZ database setup is used for this project because it fits the AWS Free Tier Requirements.
+> In production, Multi-AZ database deployment is recommended for high availability.
 
 ---
 
