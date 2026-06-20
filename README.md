@@ -681,26 +681,6 @@ This project demonstrates hands-on experience with:
 - AWS infrastructure troubleshooting
 
 ---
-
-# 🧹 Cleanup
-
-To avoid unnecessary AWS billing:
-
-```text
-Delete Auto Scaling Groups
-Delete Load Balancers
-Delete Target Groups
-Delete Launch Templates
-Delete AMIs and Snapshots
-Delete EC2 Instances
-Delete RDS Database
-Delete NAT Gateway
-Release Elastic IP
-Delete VPC resources
-```
-
----
-
 # 📜 License
 
 This project is licensed under the **MIT License**.
