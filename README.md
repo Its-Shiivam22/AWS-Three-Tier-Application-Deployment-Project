@@ -183,7 +183,7 @@ An Internet Gateway is attached to the VPC to allow internet access for public r
 A NAT Gateway is deployed to allow private instances to access the internet for updates and package installation without exposing them to inbound internet traffic.
 
 <p align="center">
-  <img src="./Images/5.Create NAT.png" width="1000">
+  <img src="./Images/6.NAT Setting.png" width="1000">
 </p>
 
 ---
