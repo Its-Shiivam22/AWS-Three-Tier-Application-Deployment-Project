@@ -327,9 +327,8 @@ User → Jump Server → Private App Server
 ## 🔹 Install Node.js and npm
 
 ```bash
-sudo yum install nodejs npm -y
+sudo dnf install nodejs -y
 node -v
-npm -v
 ```
 
 ---
@@ -563,44 +562,6 @@ Supports scaling based on demand
 
 ---
 
-# 📌 Part 6: Application Testing
-
-## ✅ Test Web Tier
-
-Open the Internet-facing ALB DNS:
-
-```text
-http://YOUR-INTERNET-FACING-ALB-DNS
-```
-
----
-
-## ✅ Test App Tier Health
-
-From the application server:
-
-```bash
-curl http://localhost:3000/health
-```
-
----
-
-## ✅ Test Database Connectivity
-
-Install MySQL client:
-
-```bash
-sudo yum install mariadb -y
-```
-
-Connect to RDS:
-
-```bash
-mysql -h <RDS-ENDPOINT> -u <USERNAME> -p
-```
-
----
-
 ## ✅ End-to-End Flow
 
 ```text
@@ -620,30 +581,6 @@ This video demonstrates the working deployment of the **AWS Three-Tier Web Appli
 </p>
 
 <h4 align="center">📌 Click on the image above to watch the full demo on YouTube.</h4>
-
----
-
-## 🖼️ Screenshots
-
-<p align="center">
-  <img src="./Images/2.VPC-ResourceMap.png" width="1000">
-</p>
-
-<p align="center">
-  <img src="./Images/16.MySQL-DB.png" width="1000">
-</p>
-
-<p align="center">
-  <img src="./Images/21.APP health.png" width="1000">
-</p>
-
-<p align="center">
-  <img src="./Images/28.WebServer -LB.png" width="1000">
-</p>
-
-<p align="center">
-  <img src="./Images/30.ASG.png" width="1000">
-</p>
 
 ---
 
