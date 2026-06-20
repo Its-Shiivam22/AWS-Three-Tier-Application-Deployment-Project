@@ -26,29 +26,6 @@ This separation improves security, scalability, fault isolation, and maintainabi
 
 ---
 
-## 🏗️ Architecture Flow
-
-```text
-User Browser
-     |
-     v
-Internet-Facing Application Load Balancer
-     |
-     v
-Web Tier - NGINX EC2 Instances
-     |
-     v
-Internal Application Load Balancer
-     |
-     v
-Application Tier - Node.js EC2 Instances
-     |
-     v
-Database Tier - Amazon RDS MySQL
-```
-
----
-
 ## 🧭 Architecture Diagram using Mermaid
 
 ```mermaid
